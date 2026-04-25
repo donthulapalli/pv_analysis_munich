@@ -1,18 +1,32 @@
 # Munich Solar PV Analysis 🌞
 
 ## Project Overview
-Solar energy analysis for Munich, Germany using Python and pvlib.
+Complete solar PV energy analysis for Munich, Germany 
+using Python and pvlib library.
 
 ## What this project does
 - Calculates solar position for Munich throughout 2023
 - Analyzes clear sky irradiance (GHI, DNI, DHI)
-- Calculates energy output of a tilted solar panel
-- Visualizes monthly energy production
+- Calculates POA irradiance on tilted panel (30° south facing)
+- Manual energy calculation using panel efficiency
+- Professional ModelChain simulation
+- Compares both methods visually
 
 ## Results
-- Total annual energy: 713.89 kWh
-- Best month: July (80.33 kWh)
-- Worst month: December (31.82 kWh)
+- Manual calculation: 713.89 kWh/year
+- ModelChain simulation: 819.55 kWh/year
+- Best month: July (~90 kWh)
+- Worst month: December (~38 kWh)
+- ModelChain is ~15% higher due to temperature 
+  and inverter modeling
+
+## System Specifications
+- Panel power: 400W
+- Panel efficiency: 20%
+- Surface tilt: 30°
+- Surface azimuth: 180° (south facing)
+- Inverter efficiency: 96%
+- Mounting: Open rack
 
 ## Tools Used
 - Python
@@ -21,4 +35,5 @@ Solar energy analysis for Munich, Germany using Python and pvlib.
 - matplotlib
 
 ## Author
-Bhanuchander - Renewable Energy & E-Mobility Engineer
+Bhanuchander — Renewable Energy & E-Mobility Engineer
+Location: Germany
