@@ -1,5 +1,5 @@
 
-from pvlib import location, irradiance
+from pvlib import location, irradiance, pvsystem, modelchain
 import pandas as pd 
 import matplotlib.pyplot as plt
 latitude, longitude, altitude = 48.13, 11.5, 520
@@ -27,12 +27,67 @@ print(f"Total annual energy: {energy_kwh.sum():.2f} kWh")
 print(f"Average daily energy: {energy_kwh.sum()/365:.2f} kWh")
 print(f"Best month: {energy_kwh.resample('M').sum().idxmax().strftime('%B')} - {energy_kwh.resample('M').sum().max():.2f} kWh")
 print(f"Worst month: {energy_kwh.resample('M').sum().idxmin().strftime('%B')} - {energy_kwh.resample('M').sum().min():.2f} kWh")
-monthly_energy = energy_kwh.resample('M').sum().rename('Energy (kWh)')
-monthly_energy.plot(kind='bar',color='green')
-plt.xlabel('month')
-plt.gca().set_xticklabels(monthly_energy.index.strftime('%b'), rotation=45)
+# Define a real solar panel system
+module_parameters = {
+    'pdc0': 400,    # panel power in watts
+    'gamma_pdc': -0.004  # temperature coefficient
+}
+
+inverter_parameters = {
+    'pdc0': 400,    # inverter power
+    'eta_inv_nom': 0.96  # inverter efficiency 96%
+}
+
+# Create PV system
+system = pvsystem.PVSystem(
+    surface_tilt=surface_tilt,
+    surface_azimuth=surface_azimuth,
+    module_parameters=module_parameters,
+    inverter_parameters=inverter_parameters,
+    racking_model='open_rack',
+    module_type='glass_polymer'
+)
+
+
+print(system)
+print("✅ PV System created!")
+# Create weather dataframe
+weather = pd.DataFrame({
+    'ghi': clear_sky['ghi'],
+    'dni': clear_sky['dni'],
+    'dhi': clear_sky['dhi'],
+    'temp_air': 10,  # average temperature in celsius
+    'wind_speed': 3  # average wind speed m/s
+})
+
+# Run modelchain simulation
+mc = modelchain.ModelChain(system, site, aoi_model="no_loss", spectral_model="no_loss")
+mc.run_model(weather)
+
+# Get results
+ac_power = mc.results.ac
+print(f"Total AC energy: {ac_power.sum()/1000:.2f} kWh")
+print("✅ ModelChain simulation complete!")
+print(len(ac_power), "hours of data simulated.")
+# Manual monthly
+manual_monthly = energy_kwh.resample('M').sum()
+
+# ModelChain monthly  
+ac_monthly = ac_power.resample('M').sum() / 1000
+
+# Plot both together
+fig, ax = plt.subplots(figsize=(12,5))
+
+manual_monthly.plot(kind='bar', ax=ax, color='orange', 
+                    label='Manual', position=1, width=0.4)
+ac_monthly.plot(kind='bar', ax=ax, color='green', 
+                label='ModelChain', position=0, width=0.4)
+
+ax.set_xticklabels(manual_monthly.index.strftime('%b'), rotation=45)
+plt.legend()
+plt.title('Manual vs ModelChain — Munich 2023')
+plt.xlabel('Month')
 plt.ylabel('Energy (kWh)')
-plt.title('Monthly Energy Production')
 plt.grid(True)
 plt.tight_layout()
 plt.show()
