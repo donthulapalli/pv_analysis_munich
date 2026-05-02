@@ -236,12 +236,63 @@ print(f"Annual electricity savings: €{annual_savings:.0f}")
 print(f"Payback period: {payback_years:.1f} years")
 print(f"25 year savings: €{(annual_savings * 25) - total_cost:.0f}")
 print(f"Return on Investment (ROI) over 25 years: {((annual_savings * 25) - total_cost) / total_cost * 100:.1f}%")
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+
+# Chart 1 — Cost breakdown pie chart
+cost_labels = ['Panels', 'Batteries', 'MPPT', 'Inverter', 'Cables', 'Installation']
+cost_values = [panel_cost, battery_cost, mppt_cost, inverter_cost,
+               dc_cable_cost + ac_cable_cost, installation_cost]
+colors = ['orange', 'blue', 'green', 'red', 'purple', 'gray']
+
+axes[0,0].pie(cost_values, labels=cost_labels, colors=colors,
+              autopct='%1.1f%%', startangle=90)
+axes[0,0].set_title('System Cost Breakdown')
+
+# Chart 2 — Financial returns
+years = [0, 5, 10, 15, 20, 25]
+cumulative = [(-total_cost)] + [(annual_savings * y) - total_cost for y in years[1:]]
+axes[0,1].bar(years, cumulative, color=['red' if x < 0 else 'green' for x in cumulative])
+axes[0,1].axhline(y=0, color='black', linestyle='--')
+axes[0,1].set_title('Financial Returns Over 25 Years')
+axes[0,1].set_xlabel('Years')
+axes[0,1].set_ylabel('€')
+axes[0,1].grid(True)
+# Chart 3 — Solar vs Load comparison
+months = ['Jan','Feb','Mar','Apr','May','Jun',
+          'Jul','Aug','Sep','Oct','Nov','Dec']
+monthly_solar = [44, 51, 73, 81, 90, 88, 90, 84, 72, 62, 46, 38]
+monthly_load_values = [350, 310, 290, 260, 240, 220, 
+                       210, 215, 240, 270, 310, 340]
+
+x = range(12)
+axes[1,0].bar([i-0.2 for i in x], monthly_solar, width=0.4,
+               label='Solar Production', color='orange')
+axes[1,0].bar([i+0.2 for i in x], monthly_load_values, width=0.4,
+               label='Household Load', color='blue')
+axes[1,0].set_xticks(range(12))
+axes[1,0].set_xticklabels(months, rotation=45)
+axes[1,0].set_title('Solar Production vs Household Load')
+axes[1,0].set_ylabel('Energy (kWh)')
+axes[1,0].legend()
+axes[1,0].grid(True)
 
 
-    
 
+# Chart 4 — System sizing summary
+components = ['Panels\n(units)', 'Batteries\n(units)', 'MPPT\n(A)', 'Inverter\n(kVA)']
+values = [total_panels, total_batteries, math.ceil(mppt_current), 
+          math.ceil(inverter_rating/1000)]
+colors4 = ['orange', 'blue', 'green', 'red']
 
+axes[1,1].bar(components, values, color=colors4)
+axes[1,1].set_title('System Components Summary')
+axes[1,1].set_ylabel('Rating/Quantity')
+axes[1,1].grid(True)
 
-
-
+plt.suptitle('Complete Solar System Analysis — Munich 2023', fontsize=14)
+plt.tight_layout()
+plt.show()
 
