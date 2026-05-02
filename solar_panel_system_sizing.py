@@ -235,6 +235,8 @@ print(f"\n=== FINANCIAL ANALYSIS ===")
 print(f"Annual electricity savings: €{annual_savings:.0f}")
 print(f"Payback period: {payback_years:.1f} years")
 print(f"25 year savings: €{(annual_savings * 25) - total_cost:.0f}")
+print(f"Return on Investment (ROI) over 25 years: {((annual_savings * 25) - total_cost) / total_cost * 100:.1f}%")
+
 
     
 
