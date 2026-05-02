@@ -165,7 +165,7 @@ axes[0, 1].grid(True)
 
 months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-monthly_solar = [44, 51, 73, 81, 90, 88, 90, 84, 72, 62, 46, 38]
+monthly_solar = energy_kwh.resample('M').sum()
 monthly_load_values = [350, 310, 290, 260, 240, 220, 210, 215, 240, 270, 310, 340]
 x = range(12)
 axes[1, 0].bar([i - 0.2 for i in x], monthly_solar, width=0.4,
