@@ -1,39 +1,41 @@
-# Munich Solar PV Analysis 🌞
+# Solar PV System Design Tool 🌞
 
 ## Project Overview
-Complete solar PV energy analysis for Munich, Germany 
-using Python and pvlib library.
+Complete off-grid solar PV system design tool built 
+in Python — from resource analysis to full system sizing.
 
-## What this project does
-- Calculates solar position for Munich throughout 2023
+## What this tool does
+- Calculates solar resource for any location using pvlib
 - Analyzes clear sky irradiance (GHI, DNI, DHI)
-- Calculates POA irradiance on tilted panel (30° south facing)
-- Manual energy calculation using panel efficiency
-- Professional ModelChain simulation
-- Compares both methods visually
+- Simulates PV energy production using ModelChain
+- Performs complete household load analysis
+- Sizes complete off-grid solar system
 
-## Results
-- Manual calculation: 713.89 kWh/year
-- ModelChain simulation: 819.55 kWh/year
-- Best month: July (~90 kWh)
-- Worst month: December (~38 kWh)
-- ModelChain is ~15% higher due to temperature 
-  and inverter modeling
+## System Sizing Outputs
+- Number of solar panels needed
+- Battery bank capacity and configuration
+- MPPT charge controller rating
+- Inverter rating
+- DC and AC cable sizes
 
-## System Specifications
-- Panel power: 400W
-- Panel efficiency: 20%
-- Surface tilt: 30°
-- Surface azimuth: 180° (south facing)
-- Inverter efficiency: 96%
-- Mounting: Open rack
+## Example Results (Munich, Germany)
+- Daily load: 10.42 kWh/day
+- Annual load: 3803 kWh/year
+- Solar panels: 6 × 400W = 2.4 kW
+- Battery bank: 24 × 12V 100Ah = 26 kWh
+- MPPT: 150V / 40A
+- Inverter: 10 kVA
+- DC cable: 4 mm²
+- AC cable: 1.5 mm²
 
 ## Tools Used
 - Python
 - pvlib
 - pandas
 - matplotlib
+- math
 
 ## Author
 Bhanuchander — Renewable Energy & E-Mobility Engineer
 Location: Germany
+GitHub: github.com/donthulapalli
