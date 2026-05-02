@@ -192,6 +192,49 @@ print(f"MPPT current rating: {mppt_current:.2f} A")
 print(f"Inverter rating needed: {inverter_rating/1000:.2f} kVA")
 print(f"DC cable to use: {dc_cable} mm²")
 print(f"AC cable to use: {ac_cable} mm²")   
+# Component costs (approximate market prices in €)
+costs = {
+    'panel_cost_per_unit': 150,      # € per panel
+    'battery_cost_per_unit': 120,    # € per battery
+    'mppt_cost': 300,                # € for MPPT
+    'inverter_cost_per_kva': 200,    # € per kVA
+    'dc_cable_cost_per_meter': 3,    # € per meter
+    'ac_cable_cost_per_meter': 2,    # € per meter
+    'installation_percent': 0.15     # 15% of equipment cost
+}
+
+# Calculate costs
+panel_cost = total_panels * costs['panel_cost_per_unit']
+battery_cost = total_batteries * costs['battery_cost_per_unit']
+mppt_cost = costs['mppt_cost']
+inverter_cost = (inverter_rating/1000) * costs['inverter_cost_per_kva']
+dc_cable_cost = cable_length_dc * 2 * costs['dc_cable_cost_per_meter']
+ac_cable_cost = cable_length_ac * costs['ac_cable_cost_per_meter']
+
+equipment_cost = panel_cost + battery_cost + mppt_cost + inverter_cost + dc_cable_cost + ac_cable_cost
+installation_cost = equipment_cost * costs['installation_percent']
+total_cost = equipment_cost + installation_cost
+
+print(f"\n=== SYSTEM COST ESTIMATION ===")
+print(f"Solar Panels ({total_panels} × €{costs['panel_cost_per_unit']}): €{panel_cost:.0f}")
+print(f"Batteries ({total_batteries} × €{costs['battery_cost_per_unit']}): €{battery_cost:.0f}")
+print(f"MPPT Controller: €{mppt_cost:.0f}")
+print(f"Inverter: €{inverter_cost:.0f}")
+print(f"DC Cables: €{dc_cable_cost:.0f}")
+print(f"AC Cables: €{ac_cable_cost:.0f}")
+print(f"Equipment Total: €{equipment_cost:.0f}")
+print(f"Installation (15%): €{installation_cost:.0f}")
+print(f"TOTAL SYSTEM COST: €{total_cost:.0f}")
+# Payback period calculation
+electricity_price = 0.30  # €/kWh Germany average
+annual_savings = annual_load * electricity_price
+
+payback_years = total_cost / annual_savings
+
+print(f"\n=== FINANCIAL ANALYSIS ===")
+print(f"Annual electricity savings: €{annual_savings:.0f}")
+print(f"Payback period: {payback_years:.1f} years")
+print(f"25 year savings: €{(annual_savings * 25) - total_cost:.0f}")
 
     
 
