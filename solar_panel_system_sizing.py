@@ -3,10 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import math
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors as rl_colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
 
 # Location setup
 latitude, longitude, altitude = 48.13, 11.5, 520
