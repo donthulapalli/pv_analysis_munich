@@ -29,7 +29,7 @@ def compare_locations(loc1, loc2):
     else:
         print(f"Both locations have the same average GHI of {clear_sky1['ghi'].mean():.2f} W/m².")
     return(solar_position1, solar_position2, clear_sky1, clear_sky2)
-compare_locations(munich, hamburg)
+
 surface_parameters = {
     'surface_tilt': 30,
     'surface_azimuth': 180
