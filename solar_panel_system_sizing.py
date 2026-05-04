@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import math
+import calendar
 
 # Location setup
 latitude, longitude, altitude = 48.13, 11.5, 520
@@ -166,7 +167,13 @@ axes[0, 1].grid(True)
 months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 monthly_solar = energy_kwh.resample('M').sum()
-monthly_load_values = [350, 310, 290, 260, 240, 220, 210, 215, 240, 270, 310, 340]
+
+
+# monthly load = daily load × days in month
+monthly_load_values = [total_daily_load/1000 * calendar.monthrange(2023,month)[1] 
+                       for month in range(1, 13)]
+
+print(monthly_load_values)
 x = range(12)
 axes[1, 0].bar([i - 0.2 for i in x], monthly_solar, width=0.4,
                label='Solar Production', color='orange')
